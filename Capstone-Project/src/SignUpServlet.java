@@ -54,7 +54,7 @@ public class SignUpServlet extends HttpServlet {
 		
 		String response = verifyUser(user, passwordConfirm);
 		
-		database = new Database(user);
+		database = new Database();
 		
 		if (response.equals("verified")) {
 			addUser(user);
@@ -105,6 +105,8 @@ public class SignUpServlet extends HttpServlet {
 	
 	private String verifyUser (User user, String passwordConfirm) {
 		
+		database = new Database();
+		
 		if (user.getFirstName().equals("")) {
 			return "First name is empty";
 		}
@@ -131,7 +133,7 @@ public class SignUpServlet extends HttpServlet {
 		
 		//send confirmation email here
 		
-		if (database.validUser(user)) {
+		if (!database.validUser(user)) {
 			return "Username is taken";
 		}
 		

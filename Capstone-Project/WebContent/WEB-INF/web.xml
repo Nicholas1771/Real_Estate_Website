@@ -10,7 +10,7 @@
 	<welcome-file>Login</welcome-file>
 	</welcome-file-list>
 	
-  	<display-name>Capstone Project Part 2</display-name>
+  	<display-name>Capstone Project</display-name>
 
   	<servlet>
 	<servlet-name>LoginServlet</servlet-name>

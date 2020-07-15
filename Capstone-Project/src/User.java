@@ -55,14 +55,7 @@ public class User {
 		this.password = password;
 	}
 	
-	/*
-	 * this method changes the username of the user
-	 */
-	
-	public void changeUsername (String newUsername) {
-		this.username = newUsername;
-	}
-	
+
 	/*
 	 * this method changes the password of the user
 	 */
@@ -70,4 +63,5 @@ public class User {
 	public void changePassword(String password) {
 		this.password = password;
 	}
+
 }
