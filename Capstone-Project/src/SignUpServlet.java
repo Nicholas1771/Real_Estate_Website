@@ -1,10 +1,13 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.mail.*;
+import javax.mail.internet.MimeMessage;
 
 public class SignUpServlet extends HttpServlet {
 
@@ -49,8 +52,9 @@ public class SignUpServlet extends HttpServlet {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		String passwordConfirm = req.getParameter("passwordConfirm");
+		boolean verified = false;
 		
-		User user = new User(firstName, lastName, username, email, password);
+		User user = new User(firstName, lastName, username, email, password, verified);
 		
 		String response = verifyUser(user, passwordConfirm);
 		
@@ -133,6 +137,7 @@ public class SignUpServlet extends HttpServlet {
 		
 		//send confirmation email here
 		
+		
 		if (!database.validUser(user)) {
 			return "Username is taken";
 		}
@@ -140,6 +145,20 @@ public class SignUpServlet extends HttpServlet {
 		//Any other verifications we need to make can go here
 		
 		return "verified";
+	}
+	
+	private void sendVerificationEmail(User user) {
+		String to = user.getEmail();
+		String from = "Nicholasiozzo17@gmail.com";
+		String host = "localhost";
+		Properties properties = System.getProperties();
+		properties.setProperty("mail.smtp.host", host);
+		
+		Session session = Session.getDefaultInstance(properties);
+		
+		try {
+			MimeMessage message = new MimeMessage(session);
+		}
 	}
 	
 	private void addUser (User user) {
