@@ -8,74 +8,61 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginServlet extends HttpServlet {
 	
-	private Database database;
-	
-	@Override
-	protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		String htmlResponse = 
-				"<html>"
-				+ "<head>"
-				+ "</head>"
-				+ "<body>"
-				+ "Login<br>"
-				+ "<form method=\"post\">"
-				+ "<label for=\"username\">Username:</label><br>"
-				+ "<input type=text id=\"username\" name=\"username\"><br>"
-				+ "<label for=\"password\">Password:</label><br>"
-				+ "<input type=password id=\"password\" name=\"password\"><br>"
-				+ "<input type=submit value=\"Login\"/><br>"
-				+ "<a href=\"SignUp\">Sign Up</a><br>"
-				+ "</form>"
-				+ "</body>"
-				+ "</html>";
-		
-		PrintWriter writer = resp.getWriter();
-		writer.write(htmlResponse);
-	}
-	
 	@Override
 	protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		
 		String password = req.getParameter("password");
 		String username = req.getParameter("username");
 		
-		this.database = new Database();
+		resp.setContentType("text/html");
 		
-		if (database.login(username, password)) {
-			System.out.println("Successful Login");
-			String htmlResponse = 
-					"<html>"
-					+ "<head>"
-					+ "</head>"
-					+ "<body>"
-					+ "Welcome to our real estate website!<br>"
-					+ "Successfuly logged in as: " + username
-					+ "</body>"
-					+ "</html>";
+		PrintWriter out = resp.getWriter();
+		
+		String response = loginUser (username, password);
+		
+		
+		
+		if (response.equals("fail")) {
 			
-			PrintWriter writer = resp.getWriter();
-			writer.write(htmlResponse);
+			out.print("Incorrect username or password<br>");  
+            req.getRequestDispatcher("login.html").include(req, resp);
+            
 		} else {
-			String htmlResponse = 
-					"<html>"
-					+ "<head>"
-					+ "</head>"
-					+ "<body>"
-					+ "* Invalid username or password<br><br>"
-					+ "Login<br>"
-					+ "<form method=\"post\">"
-					+ "<label for=\"username\">Username:</label><br>"
-					+ "<input type=text id=\"username\" name=\"username\"><br>"
-					+ "<label for=\"password\">Password:</label><br>"
-					+ "<input type=password id=\"password\" name=\"password\"><br>"
-					+ "<input type=submit value=\"Login\"/>"
-					+ "<a href=\"SignUp\">Sign Up</a><br>"
-					+ "</form>"
-					+ "</body>"
-					+ "</html>";
 			
-			PrintWriter writer = resp.getWriter();
-			writer.write(htmlResponse);
+			req.getSession().setAttribute("username", username);
+			
+			if (response.equals("verified")) {
+				
+				resp.sendRedirect("/Capstone-Project/main.html");
+				
+			} else if (response.equals("unverified")) {
+				
+				req.getRequestDispatcher("verify.html").include(req, resp);
+			}
 		}
+	}
+	
+	private String loginUser (String username, String password) {
+		
+		UserAuthentication userAuth = UserAuthentication.getUserAuthenicationInstance();
+		
+		String response = null;
+		
+		if (userAuth.loginUser(username, password)) {
+			
+			if (userAuth.isUserVerified(username)) {
+				
+				response = "verified";
+			} else {	
+				
+				response = "unverified";
+			}
+			
+		} else {
+			
+			response = "fail";
+		}
+		
+		return response;
 	}
 }

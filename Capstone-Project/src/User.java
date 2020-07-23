@@ -6,13 +6,15 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
+	private boolean verified;
 	
-	public User(String firstName, String lastName, String username, String email, String password) {
+	public User(String firstName, String lastName, String username, String email, String password, boolean verified) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.verified = verified;
 	}
 
 	public String getFirstName() {

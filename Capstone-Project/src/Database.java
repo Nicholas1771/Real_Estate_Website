@@ -42,7 +42,9 @@ public class Database {
 				+ "FirstName varchar(255) not null, "
 				+ "LastName varchar(255) not null, "
 				+ "Password varchar(255) not null, "
-				+ "Email varchar(255) not null);";
+				+ "Email varchar(255) not null, "
+				+ "Code char(6) not null, "
+				+ "Verified varchar(255) not null);";
 		return sql;
 	}
 	
@@ -103,6 +105,46 @@ public class Database {
 	 * this method checks if username is in database
 	 */
 	
+	public String getUserVerificationCode (String username) {
+		String SQL = "SELECT * FROM User WHERE userName = '" + username + "'"; 
+		
+        try {
+            Statement statement = Database.getConnection().createStatement();
+            ResultSet rs = statement.executeQuery(SQL);
+
+            if (rs.next()) {
+
+                return rs.getString("Code");
+            } else {
+            	System.out.println("User is not in database");
+            	return "ERROR!";
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "ERROR!";
+        }
+	}
+	
+	public String getUserEmail (String username) {
+		String SQL = "SELECT * FROM User WHERE userName = '" + username + "'"; 
+		
+        try {
+            Statement statement = Database.getConnection().createStatement();
+            ResultSet rs = statement.executeQuery(SQL);
+
+            if (rs.next()) {
+
+                return rs.getString("Email");
+            } else {
+            	System.out.println("User is not in database");
+            	return "ERROR!";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "ERROR!";
+        }
+	}
 	
 	public boolean validUser(User user) {
 		
@@ -163,11 +205,52 @@ public class Database {
         return false;
     }
 	
+	//Checks if the user has been email verified
+	public boolean isUserVerified (String username) {
+		String SQL = "SELECT * FROM User WHERE userName = '" + username + "'"; 
+		
+        try {
+            Statement statement = Database.getConnection().createStatement();
+            ResultSet rs = statement.executeQuery(SQL);
+
+            if (rs.next()) {
+                System.out.println("Checking if user is verified in database");
+
+                if (rs.getString("Verified").equals("true") ) {
+                    System.out.println("User is verified");
+                    return true;
+                } else {
+                	System.out.println("User is not verified");
+                	return false;
+                }
+            } else {
+            	System.out.println("User is not in database");
+            	return false;
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+	}
 	
+	//Verifies the user in the database
+	public void verifiyUser (String username) {
+		
+		String SQL = "UPDATE `Capstone`.`User` SET `Verified` = 'true' WHERE (`userName` = '"+ username + "');";
+		
+		try {
+		Statement statement = Database.getConnection().createStatement();
+		statement.executeUpdate(SQL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Verified User");
+	}
 	/*
 	 * this methods add the User to the database
 	 */
-	public void addUserToDatabase(User user) {
+	public void addUserToDatabase(User user, String code) {
 		String username = user.getUsername();
 		String firstName = user.getFirstName();
 		String lastName = user.getLastName();
@@ -175,7 +258,7 @@ public class Database {
 		String email = user.getEmail();
 		
 		// statement
-		String SQL = "INSERT INTO `Capstone`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Email`) VALUES ('" + username + "', '" + firstName + "', '" + lastName + "', '" + password + "', '" + email + "');";
+		String SQL = "INSERT INTO `Capstone`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Email`, `Code`, `Verified`) VALUES ('" + username + "', '" + firstName + "', '" + lastName + "', '" + password + "', '" + email + "', '" + code + "', 'false');";
 		
 		
 		// execute statement
@@ -221,7 +304,7 @@ public class Database {
 		String firstName = user.getFirstName();
 		String username = user.getUsername();
 		
-		String SQL = "UPDATE `Capstone`.`user` SET `FirstName` = '" + firstName + "' WHERE (`userName` = '"+ username + "');";
+		String SQL = "UPDATE `Capstone`.`User` SET `FirstName` = '" + firstName + "' WHERE (`userName` = '"+ username + "');";
 		
 		// execute Statement
 		
@@ -244,7 +327,7 @@ public class Database {
 		String lastName = user.getLastName();
 		String username = user.getUsername();
 		
-		String SQL = "UPDATE `Capstone`.`user` SET `LastName` = '" + lastName + "' WHERE (`userName` = '"+ username + "');";
+		String SQL = "UPDATE `Capstone`.`User` SET `LastName` = '" + lastName + "' WHERE (`userName` = '"+ username + "');";
 		
 		try {
 			Statement statement = Database.getConnection().createStatement();
@@ -264,7 +347,7 @@ public class Database {
 		String password = user.getPassword();
 		String username = user.getUsername();
 		
-		String SQL = "UPDATE `Capstone`.`user` SET `Password` = '" + password + "' WHERE (`UserName` = '"+ username + "');";
+		String SQL = "UPDATE `Capstone`.`User` SET `Password` = '" + password + "' WHERE (`UserName` = '"+ username + "');";
 		
 		try {
 			Statement statement = Database.getConnection().createStatement();
@@ -273,10 +356,7 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	
-	
+	}	
 }
 
 
