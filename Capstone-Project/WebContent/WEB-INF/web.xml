@@ -6,8 +6,8 @@
 	id="WebApp_ID" 
 	version="3.0">
 	
-  <welcome-file-list>
-	<welcome-file>Login</welcome-file>
+  	<welcome-file-list>
+	<welcome-file>login.html</welcome-file>
 	</welcome-file-list>
 	
   	<display-name>Capstone Project</display-name>
@@ -19,7 +19,7 @@
 
 	<servlet-mapping>
 	<servlet-name>LoginServlet</servlet-name>
-	<url-pattern>/Login</url-pattern>
+	<url-pattern>/LoginServlet</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -30,5 +30,25 @@
 	<servlet-mapping>
 	<servlet-name>SignUpServlet</servlet-name>
 	<url-pattern>/SignUp</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>VerifyServlet</servlet-name>
+	<servlet-class>VerifyServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+	<servlet-name>VerifyServlet</servlet-name>
+	<url-pattern>/Verify</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>MainServlet</servlet-name>
+	<servlet-class>MainServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	<servlet-name>MainServlet</servlet-name>
+	<url-pattern>/Main</url-pattern>
 	</servlet-mapping>
 </web-app>
