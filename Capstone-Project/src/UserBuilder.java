@@ -6,7 +6,6 @@ public class UserBuilder {
 	private String username;
 	private String email;
 	private String password;
-	private boolean verified;
 	
 	
 	public UserBuilder setFirstName(String firstName) {
@@ -34,16 +33,11 @@ public class UserBuilder {
 		return this;
 	}
 	
-	public UserBuilder setVerified(Boolean verified) {
-		this.verified = verified;
-		return this;
-	}
-	
 	/*
 	 * this method creates the User
 	 */
 	public User createUser() {
-		return new User(firstName,lastName,username,email,password,verified);
+		return new User(firstName,lastName,username,email,password);
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ForgotPass extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
 	private UserAuthentication userAuth;
 	
 	@Override
