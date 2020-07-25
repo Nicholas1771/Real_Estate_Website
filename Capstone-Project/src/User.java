@@ -54,17 +54,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-
-	/*
-	 * this method changes the password of the user
-	 */
-	
-	public void changePassword(String password) {
-		this.password = password;
-	}
-	
-	
-	
-
 }

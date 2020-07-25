@@ -6,10 +6,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ForgotPass extends HttpServlet {
+public class ForgotPassServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	
 	private UserAuthentication userAuth;
+	
+	private EmailVerificationFactory emailVerificationFactory;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,8 +41,13 @@ public class ForgotPass extends HttpServlet {
 				req.getRequestDispatcher("forgot_password.html").include(req, resp);
 			}
 		} else if (req.getParameter("forgot").equals("Send Email")) {
-			String message = "You requested a password reset from our web application. Your verification code is:";
-			userAuth.sendVerificationEmail(username, message);	
+			
+			emailVerificationFactory = new EmailVerificationFactory();
+			
+			EmailVerification email = emailVerificationFactory.getEmaiVerification(EmailVerificationFactory.FORGOT_PASSWORD, username);
+			
+			email.send();
+			
 			out.println("Sent verification code<br>");  
 			req.getRequestDispatcher("forgot_password.html").include(req, resp);
 		}
