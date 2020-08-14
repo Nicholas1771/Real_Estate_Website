@@ -356,7 +356,39 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
+	
+	
+	/*
+	 * this method creates the Listing Table
+	 */
+	
+
+	public static String listingTableCreation () {
+		String sql;
+		
+		sql =
+				"CREATE TABLE `Listing` "
+				+ "(`ListingID` INT NOT NULL AUTO_INCREMENT,"
+				+ "`Address` VARCHAR(255) NOT NULL,"
+				+ "`city` VARCHAR(255) NOT NULL,"
+				+ "`country` VARCHAR(255) NOT NULL,"
+				+ "`postalCode` VARCHAR(255) NOT NULL,"
+				+ "`numberOfBedrooms` VARCHAR(255) NOT NULL,"
+				+ "`numberOfBathrooms` VARCHAR(225) NOT NULL,"
+				+ "`homeType` VARCHAR(255) NOT NULL,"
+				+ "`price` VARCHAR(255) NOT NULL," 
+				+ "PRIMARY KEY (`ListingID`));";
+				
+		return sql;
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 
