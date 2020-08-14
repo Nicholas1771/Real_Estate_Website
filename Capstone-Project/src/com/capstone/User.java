@@ -1,3 +1,4 @@
+package com.capstone;
 
 public class User {
 	

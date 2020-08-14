@@ -1,3 +1,4 @@
+package com.capstone;
 import java.util.Properties;
 
 import javax.mail.Message;
