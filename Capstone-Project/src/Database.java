@@ -338,14 +338,30 @@ public class Database {
 		}
 	}
 	
+	/*
+	 * this method checks if username is in database
+	 */
+	
+	public void setNewVerificationCode (String username, String code) {
+		
+		String SQL = "UPDATE `Capstone`.`User` SET `Code` = '" + code + "' WHERE (`userName` = '"+ username + "');";
+		
+		// execute Statement
+		
+		try {
+			Statement statement = Database.getConnection().createStatement();
+			statement.executeUpdate(SQL);
+			System.out.println("Code has been changed");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/*
 	 * this method allows user to change password
 	 */
 	
-	public void updatePassword(User user) {
-		String password = user.getPassword();
-		String username = user.getUsername();
+	public void updatePassword(String username, String password) {
 		
 		String SQL = "UPDATE `Capstone`.`User` SET `Password` = '" + password + "' WHERE (`UserName` = '"+ username + "');";
 		
