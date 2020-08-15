@@ -1,6 +1,8 @@
 package com.capstone;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 	
@@ -442,16 +444,46 @@ public class Database {
 	 * this method retrieves all the listings
 	 */
 	
-	public void retrieveListings() {
+	public List<Listing> retrieveListings() {
 		String SQL = "Select * FROM listing;";
-		
+		List<Listing> listings = new ArrayList<Listing>();
 		try {
 			Statement statement = Database.getConnection().createStatement();
-			statement.execute(SQL);
+			ResultSet rs = statement.executeQuery(SQL);
+			while(rs.next()) {
+				String address = rs.getString("Address");
+				String city = rs.getString("city");
+				String province = rs.getString("province");
+				String country = rs.getString("country");
+				String postalCode = rs.getString("postalCode");
+				String numberOfBedroomsStr = rs.getString("numberOfBedrooms");
+				String numberOfBathroomsStr = rs.getString("numberOfBathrooms");
+				String homeType = rs.getString("homeType");
+				String price = rs.getString("price");
+				
+				int numberOfBedrooms = 0;
+				try {
+					numberOfBedrooms = Integer.valueOf(numberOfBedroomsStr);
+				} catch (Exception e) {
+				}
+				
+				
+				int numberOfBathrooms = 0;
+				try {
+					numberOfBathrooms = Integer.valueOf(numberOfBathroomsStr);
+				} catch (Exception e) {
+				}
+				
+				Listing listing = new Listing(address, city, province, country, postalCode, numberOfBedrooms, numberOfBathrooms, homeType, price);
+				listings.add(listing);				
+			}
+			
+			
 			System.out.println("Retrieving all listings");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return listings;
 	}
 	
 	
