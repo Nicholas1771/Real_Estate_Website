@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 			
 			if (response.equals("verified")) {
 				
-				resp.sendRedirect("/Capstone-Project/home.jsp");
+				resp.sendRedirect("/Capstone-Project/Listing");
 				
 			} else if (response.equals("unverified")) {
 				
