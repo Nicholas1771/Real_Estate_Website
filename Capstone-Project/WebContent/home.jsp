@@ -12,7 +12,7 @@
 
 	<h1>List your home</h1>
 
-	<form>
+	<form action="Listing" method="post">
 		<label for="address">Address:</label>
 		<input type="text" id="address" name="address"><br>
 		
@@ -69,7 +69,10 @@
                    <%@ page import = "com.capstone.Listing" %>
                    
                     <%
-                    ArrayList<com.capstone.Listing> listings = (ArrayList<com.capstone.Listing>) request.getAttribute("listings");         
+                    ArrayList<com.capstone.Listing> listings = new ArrayList<com.capstone.Listing>();
+                    if (request.getAttribute("listings") != null) {
+                    	listings = (ArrayList<com.capstone.Listing>) request.getAttribute("listings"); 
+                    }                           
 
                     	for (int i = 0; i < listings.size(); i++) {
                         	String address = listings.get(i).getAddress();
@@ -84,7 +87,7 @@
                    	%>
                     
                     <tr>
-                        <th scope="row"></th>
+						<!-- <th scope="row"></th> -->
                         <td><%=address%></td>
                         <td><%=city%></td>
                         <td><%=province%></td>
