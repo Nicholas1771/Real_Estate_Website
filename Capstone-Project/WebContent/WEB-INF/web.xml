@@ -14,7 +14,7 @@
 
   	<servlet>
 	<servlet-name>LoginServlet</servlet-name>
-	<servlet-class>LoginServlet</servlet-class>
+	<servlet-class>com.capstone.LoginServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -24,7 +24,7 @@
 	
 	<servlet>
 	<servlet-name>SignUpServlet</servlet-name>
-	<servlet-class>SignUpServlet</servlet-class>
+	<servlet-class>com.capstone.SignUpServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -34,7 +34,17 @@
 	
 	<servlet>
 	<servlet-name>VerifyServlet</servlet-name>
-	<servlet-class>VerifyServlet</servlet-class>
+	<servlet-class>com.capstone.VerifyServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+	<servlet-name>ListingServlet</servlet-name>
+	<url-pattern>/Listing</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>ListingServlet</servlet-name>
+	<servlet-class>com.capstone.ListingServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
