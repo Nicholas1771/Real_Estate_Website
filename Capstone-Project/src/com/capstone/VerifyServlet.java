@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class VerifyServlet extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
+	
+	private EmailVerificationFactory emailVerificationFactory;
+	
 	private UserAuthentication userAuth;
 	
 	@Override
@@ -30,21 +34,25 @@ public class VerifyServlet extends HttpServlet {
 			boolean verified = verifyUser (username, enteredCode);
 			
 			if (verified) {
-				resp.sendRedirect("/Capstone-Project/main.html");
+				resp.sendRedirect("/Capstone-Project/home.jsp");
 			} else {
 				out.print("Incorrect code<br>");  
 				req.getRequestDispatcher("verify.html").include(req, resp);
 			}
 		} else if (req.getParameter("verify").equals("Resend Code")) {
+
+			emailVerificationFactory = new EmailVerificationFactory();
 			
-			userAuth.sendVerificationEmail(username);	
+			EmailVerification email = emailVerificationFactory.getEmaiVerification(EmailVerificationFactory.SIGNUP, username);
+			
+			email.send();
+			
 			out.println("Resent verification email<br>");  
 			req.getRequestDispatcher("verify.html").include(req, resp);
 		}
 	}
 	
 	private boolean verifyUser (String username, String code) {		
-		
 		return userAuth.verifyUser(username, code);
 	}
 }

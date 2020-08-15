@@ -74,10 +74,8 @@
                     	for (int i = 0; i < listings.size(); i++) {
                         	String address = listings.get(i).getAddress();
                             String city = listings.get(i).getCity();
-                            //String province = listings.get(i).getProvince();
-                            //String country = listings.get(i).getCountry();
-                            String province = "Ontario";
-                            String country = "Canada";
+                            String province = listings.get(i).getProvince();
+                            String country = listings.get(i).getCountry();
                             String postalCode = listings.get(i).getPostalCode();
                             int numberOfBedrooms = listings.get(i).getNumberOfBedrooms();
                             int numberOfBathrooms = listings.get(i).getNumberOfBathrooms();

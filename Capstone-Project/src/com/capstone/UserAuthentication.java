@@ -16,7 +16,7 @@ public class UserAuthentication {
 	private Database database;
 	
 	private UserAuthentication () {
-		this.database = new Database();
+		database = new Database();
 	}
 	
 	public static synchronized UserAuthentication getUserAuthenicationInstance () {
@@ -26,36 +26,6 @@ public class UserAuthentication {
 		}
 		
 		return instance;
-	}
-	
-	public void sendVerificationEmail(String username) {
-		
-		String to = database.getUserEmail(username);
-		String from = "capstoneprojectwebapp@gmail.com";
-		String code = database.getUserVerificationCode(username);
-		
-		Properties properties = new Properties();
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-		properties.put("mail.smtp.port", 587);
-		
-		Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication () {
-				return new PasswordAuthentication("capstoneprojectwebapp@gmail.com", "Capstone.34");						
-			}
-		});
-		
-		try {
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-			message.setSubject("Verification Email");
-			message.setText("Thank you for signing up with our web application, your verification code is: " + code);
-			Transport.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public String generateVerificationCode (int length) {
@@ -108,7 +78,8 @@ public class UserAuthentication {
 		return "valid";
 	}
 	
-	public void addUser (User user, String code) {
+	public void addUser (User user) {
+		String code = "NOCODE";
 		database.addUserToDatabase(user, code);
 	}	
 	
@@ -116,9 +87,22 @@ public class UserAuthentication {
 		
 		String code = database.getUserVerificationCode(username);
 		
-		if (code.equals(enteredCode)) {
+		if (code.equalsIgnoreCase(enteredCode)) {
 			database.verifiyUser(username);
 			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean changeUserPass (String username, String enteredCode, String password, String confirmPassword) {
+		if (verifyUser(username, enteredCode)) {
+			if (password.equals(confirmPassword)) {
+				database.updatePassword(username, password);
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}

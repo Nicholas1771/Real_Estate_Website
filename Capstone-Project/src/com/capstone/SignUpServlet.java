@@ -2,17 +2,17 @@ package com.capstone;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 public class SignUpServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+	
+	private EmailVerificationFactory emailVerificationFactory;
 
 	@Override
 	protected void doPost (HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -22,9 +22,14 @@ public class SignUpServlet extends HttpServlet {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		String passwordConfirm = req.getParameter("passwordConfirm");
-		boolean verified = false;
 		
-		User user = new User(firstName, lastName, username, email, password, verified);
+		User user = new UserBuilder()
+			.setFirstName(firstName)
+			.setLastName(lastName)
+			.setEmail(email)
+			.setPassword(password)
+			.setUsername(username)
+			.createUser();
 		
 		resp.setContentType("text/html");
 		
@@ -49,11 +54,15 @@ public class SignUpServlet extends HttpServlet {
 		
 		if (response.equals("valid")) {
 			
-			String code = userAuth.generateVerificationCode(6);
+			userAuth.addUser(user);
 			
-			userAuth.addUser(user, code);
+			String username = user.getUsername();
 			
-			userAuth.sendVerificationEmail(user.getUsername());
+			emailVerificationFactory = new EmailVerificationFactory();
+			
+			EmailVerification email = emailVerificationFactory.getEmaiVerification(EmailVerificationFactory.SIGNUP, username);
+			
+			email.send();
 		} 
 		
 		return response;
