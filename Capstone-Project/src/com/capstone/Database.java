@@ -91,6 +91,11 @@ public class Database {
 				statement.executeUpdate(getTableCreationSQL());
 				System.out.println("Table created");
 				
+				// create listing table
+				statement.executeUpdate(listingTableCreation());
+				System.out.println("Listing Table created");
+				
+				
 			}
 
 				connection = DriverManager.getConnection(CONN_STRING_DB, USERNAME, PASSWORD);
@@ -389,6 +394,7 @@ public class Database {
 				+ "(`ListingID` INT NOT NULL AUTO_INCREMENT,"
 				+ "`Address` VARCHAR(255) NOT NULL,"
 				+ "`city` VARCHAR(255) NOT NULL,"
+				+ "`province` VARCHAR(255) NOT NULL,"
 				+ "`country` VARCHAR(255) NOT NULL,"
 				+ "`postalCode` VARCHAR(255) NOT NULL,"
 				+ "`numberOfBedrooms` VARCHAR(255) NOT NULL,"
@@ -396,9 +402,82 @@ public class Database {
 				+ "`homeType` VARCHAR(255) NOT NULL,"
 				+ "`price` VARCHAR(255) NOT NULL," 
 				+ "PRIMARY KEY (`ListingID`));";
+		
 				
 		return sql;
 	}
+	
+	/*
+	 * this method adds Listing to the Database
+	 */
+	
+	
+	public void addListingToDatabase(Listing listing) {
+		String address = listing.getAddress();
+		String city = listing.getCity();
+		String province = listing.getProvince();
+		String country = listing.getCountry();
+		String postalCode = listing.getPostalCode();
+		int numberOfBedrooms = listing.getNumberOfBedrooms();
+		int numberOfBathrooms = listing.getNumberOfBathrooms();
+		String homeType = listing.getHomeType();
+		String price = listing.getPrice();
+		
+		
+		String SQL = "INSERT INTO `capstone`.`listing` (`Address`, `city`, `province`, `country`, `postalCode`, `numberOfBedrooms`, `numberOfBathrooms`, `homeType`, `price`) VALUES ('" + address + "', '" + city + "', '" + province + "', '" + country + "', '" + postalCode + "', '" + numberOfBedrooms + "', '" + numberOfBathrooms + "', '" + homeType + "', '" + price + "');";                       
+		
+		// execute statement
+		
+		try {
+			Statement statement = Database.getConnection().createStatement();
+			statement.executeUpdate(SQL);
+			System.out.println("Added to database");
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/*
+	 * this method retrieves all the listings
+	 */
+	
+	public void retrieveListings() {
+		String SQL = "Select * FROM listing;";
+		
+		try {
+			Statement statement = Database.getConnection().createStatement();
+			statement.execute(SQL);
+			System.out.println("Retrieving all listings");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/*
+	 * this method deletes the listing based on the address
+	 */
+	
+	public void deleteListing(Listing listing) {
+		String address = listing.getAddress();
+		
+		String SQL = "Delete FROM `Capstone`.`Listing` WHERE address = '" + address +"';";
+		
+		// execute Statement
+		
+				try {
+					Statement statement = Database.getConnection().createStatement();
+					statement.executeUpdate(SQL);
+					System.out.println("Listing has been deleted");
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	}
+	
+	
+	
+	
 	
 	
 	
